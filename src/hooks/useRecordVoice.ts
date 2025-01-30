@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { AzureSpeechService } from '../lib/azure-speech';
+import { DeepgramSpeechService } from '../lib/deepgram-speech';
 import { TranscriptHistory, TranscriptionBubble } from '../types/interview';
 
 export const useRecordVoice = () => {
@@ -11,8 +11,8 @@ export const useRecordVoice = () => {
     Interviewer: []
   });
   const generateResponseRef = useRef<((text: string, history: TranscriptHistory) => void) | null>(null);
-  const micServiceRef = useRef<AzureSpeechService | null>(null);
-  const tabServiceRef = useRef<AzureSpeechService | null>(null);
+  const micServiceRef = useRef<DeepgramSpeechService | null>(null);
+  const tabServiceRef = useRef<DeepgramSpeechService | null>(null);
   const bubbleCounter = useRef<number>(0);
   const tabStreamRef = useRef<MediaStream | null>(null);
 
@@ -66,12 +66,12 @@ export const useRecordVoice = () => {
       // Create a clone of the stream for audio processing
       const audioStream = new MediaStream(displayStream.getAudioTracks());
 
-      // Initialize microphone service (Azure will handle mic permissions)
-      micServiceRef.current = new AzureSpeechService('mic');
+      // Initialize microphone service
+      micServiceRef.current = new DeepgramSpeechService('mic');
       await micServiceRef.current.initialize(handleTranscription, handleError);
 
       // Initialize tab audio service with the audio stream
-      tabServiceRef.current = new AzureSpeechService('tab', audioStream);
+      tabServiceRef.current = new DeepgramSpeechService('tab', audioStream);
       await tabServiceRef.current.initialize(handleTranscription, handleError);
 
       setRecording(true);

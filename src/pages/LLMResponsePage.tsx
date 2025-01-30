@@ -215,8 +215,15 @@ export default function LLMResponsePage() {
           {/* Right Panel - AI Suggestions */}
           <div className="space-y-4">
             <h2 className="text-lg font-semibold">AI Interview Assistant</h2>
-            <div className="bg-white rounded-lg p-4">
-              <div className="h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar space-y-4">
+            <div className="bg-white rounded-lg p-4 flex flex-col" style={{ height: 'calc(100vh - 13rem)' }}>
+              <div 
+                className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2"
+                ref={(el) => {
+                  if (el) {
+                    el.scrollTop = el.scrollHeight;
+                  }
+                }}
+              >
                 {responses.map((response) => (
                   <div key={response.id} className="bg-[#FFF8EE] rounded-lg p-3">
                     <p className="text-gray-700 text-sm whitespace-pre-wrap">
